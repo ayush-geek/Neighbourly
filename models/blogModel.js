@@ -18,7 +18,12 @@ const blogSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'User',
         require: [true, 'user id is required']
+    },
+    tag: {
+        type: String,
+        default: "General"
     }
+
 }, { timestamps: true })
 
 const blogModel = mongoose.model('Blog', blogSchema)

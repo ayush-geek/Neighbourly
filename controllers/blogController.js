@@ -35,8 +35,9 @@ exports.getAllBlogsController = async (req, res) => {
 
 //Create Blog
 exports.createBlogController = async (req, res) => {
+    console.log(req.body);
     try {
-        const { title, description, image, user } = req.body;
+        const { title, description, image, user, tag } = req.body;
 
         //validation
         if (!title || !description || !image || !user) {
@@ -58,7 +59,7 @@ exports.createBlogController = async (req, res) => {
                 error
             })
 
-        const newBlog = new blogModel({ title, description, image, user })
+        const newBlog = new blogModel({ title, description, image, user, tag })
 
         //to maintain relationship b/w models
         const session = await mongoose.startSession()
@@ -70,11 +71,12 @@ exports.createBlogController = async (req, res) => {
 
         await newBlog.save();
 
-
+        console.log(newBlog);
         return res.status(201).send({
             success: true,
             message: "Blog Created",
             newBlog
+
         })
 
     } catch (error) {
@@ -91,7 +93,7 @@ exports.createBlogController = async (req, res) => {
 exports.updateBlogController = async (req, res) => {
     try {
         const { id } = req.params
-        const { title, description, image } = req.body
+        const { title, description, image, tag } = req.body
         const blog = await blogModel.findByIdAndUpdate(id, { ...req.body }, { new: true });
         return res.status(200).send({
             success: true,
