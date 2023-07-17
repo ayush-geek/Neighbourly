@@ -21,10 +21,11 @@ export default function BlogCard({
     time,
     id,
     isUser,
-    tag
-
+    tag,
 }) {
     const navigate = useNavigate();
+    const [showDescription, setShowDescription] = React.useState(false);
+
     const handleEdit = () => {
         navigate(`/blog-details/${id}`);
     };
@@ -40,6 +41,16 @@ export default function BlogCard({
             console.log(error);
         }
     };
+
+    // Format timestamp to DD-MM-YYYY HH:mm
+    const formattedTime = new Date(time).toLocaleString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    });
+
     return (
         <Card
             sx={{
@@ -70,18 +81,31 @@ export default function BlogCard({
                     </Avatar>
                 }
                 title={username}
-                subheader={time}
+                subheader={formattedTime} // Display formatted time
             />
-            <CardMedia component="img" height="194" image={image} alt="Paella dish" />
+            <CardMedia
+                component="img"
+                height="400px" // Set a fixed height to maintain the aspect ratio
+                image={image}
+                alt="Paella dish"
+                sx={{
+                    cursor: "pointer",
+                    objectFit: "cover", // Maintain aspect ratio without stretching
+                    width: "100%", // Make sure the image covers the entire width of the CardMedia
+                }}
+                onClick={() => setShowDescription(!showDescription)}
+            />
             <CardContent>
-                <Typography variant="h6" color="text.secondary">
-                    Title : {title}
+                <Typography variant="h5" color="text.primary" gutterBottom>
+                    {title} {/* Use h5 for an attractive title */}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Description : {description}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Tag : {tag}
+                {showDescription && (
+                    <Typography variant="body2" color="text.secondary">
+                        Description: {description} {/* Use body2 for description */}
+                    </Typography>
+                )}
+                <Typography variant="body2" color="text.primary">
+                    #{tag} {/* Replace "Tag:" with "#" */}
                 </Typography>
             </CardContent>
         </Card>

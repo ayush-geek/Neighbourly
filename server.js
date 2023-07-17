@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const colors = require('colors')
 const dotenv = require('dotenv')
 const connectDB = require('./config/db')
-const path = require('path')
+// const path = require('path')
 
 //env config
 // if not in root specify path
@@ -16,6 +16,7 @@ connectDB();
 //router import
 const userRoutes = require('./routes/userRoute')
 const blogRoutes = require('./routes/blogRoute')
+const tagRoutes = require('./routes/tagRoute')
 
 //rest Object
 const app = express()
@@ -29,13 +30,16 @@ app.use(morgan('dev'))
 //routes
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/blog", blogRoutes);
+app.use("/api/v1/tags", tagRoutes);
 
-//static files
-app.use(express.static(path.join(__dirname, './client/build')))
 
-app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, './client/build/index.html'))
-});
+
+// static files
+// app.use(express.static(path.join(__dirname, './client/build')))
+
+// app.get('*', function (req, res) {
+//     res.sendFile(path.join(__dirname, './client/build/index.html'))
+// });
 
 
 //PORT
